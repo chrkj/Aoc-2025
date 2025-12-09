@@ -1,62 +1,48 @@
-﻿using System.Text.RegularExpressions;
-using AoCHelper;
+﻿using AoCHelper;
 
 namespace AdventOfCode;
 
-public partial class Day02 : BaseDay
+public partial class Day03 : BaseDay
 {
-    private readonly long[][] _input;
+    private readonly string[] _input;
     
-    public Day02()
+    public Day03()
     {
         string inputString = File.ReadAllText(InputFilePath);
-        _input = inputString.Split(',').Select(s =>
-        {
-            string[] p = s.Split('-');
-            return new[] { long.Parse(p[0]), long.Parse(p[1]) };
-        }).ToArray();
+        _input = inputString.Split("\n", StringSplitOptions.TrimEntries);
     }
 
     public override ValueTask<string> Solve_1()
     {
-        long answer = 0;
-        foreach (long[] range in _input)
+        long sumOfJolts = 0;
+        foreach (string bank in _input)
         {
-            for (long i = range[0]; i < range[1] + 1; i++)
+            int maxJoltValueLeft = int.MinValue;
+            int maxJoltIndexLeft = 0;
+            for (int i = bank.Length - 2; i >= 0; i--)
             {
-                if (i.ToString().Length % 2 != 0) 
-                    continue;
-                
-                string asStr = i.ToString();
-                int mid = asStr.Length / 2;
-                string firstHalf = asStr[..mid];
-                string secondHalf = asStr.Substring(mid, mid);
-
-                if (firstHalf != secondHalf) 
-                    continue;
-                answer += i;
+                if (bank[i] - '0' >= maxJoltValueLeft)
+                {
+                    maxJoltValueLeft = bank[i] - '0'; 
+                    maxJoltIndexLeft = i;
+                }
             }
+            int maxJoltValueRight = int.MinValue;
+            for (int i = maxJoltIndexLeft + 1; i < bank.Length; i++)
+            {
+                if (bank[i] - '0' >= maxJoltValueRight)
+                {
+                    maxJoltValueRight = bank[i] - '0';
+                }
+            }
+            sumOfJolts += maxJoltValueLeft * 10 + maxJoltValueRight;
         }
-        return new ValueTask<string>(answer.ToString());
+        return new ValueTask<string>(sumOfJolts.ToString());
     }
-    
-    [GeneratedRegex(@"^(.+)\1+$")]
-    private static partial Regex PrecompiledRegex();
-    
+
     public override ValueTask<string> Solve_2()
     {
-        long answer = 0;
-        foreach (long[] range in _input)
-        {
-            for (long i = range[0]; i < range[1] + 1; i++)
-            {
-                var re = PrecompiledRegex();
-                
-                if (re.IsMatch(i.ToString()))
-                    answer += i;
-            }
-        }
-        return new ValueTask<string>(answer.ToString());
+        return new ValueTask<string>();
     }
 
     
