@@ -72,18 +72,19 @@ public partial class Day03 : BaseDay
                 batteries[i] = lastBatteryIndex;
             }
 
-            sumOfJolts += 100000000000 * (long)(bank[batteries[0]] - '0') +
-                10000000000 * (long)(bank[batteries[1]] - '0') +
-                1000000000 * (long)(bank[batteries[2]] - '0') +
-                100000000 * (long)(bank[batteries[3]] - '0') +
-                10000000 * (long)(bank[batteries[4]] - '0') +
-                1000000 * (long)(bank[batteries[5]] - '0') +
-                100000 * (long)(bank[batteries[6]] - '0') +
-                10000 * (long)(bank[batteries[7]] - '0') +
-                1000 * (long)(bank[batteries[8]] - '0') +
-                100 * (long)(bank[batteries[9]] - '0') +
-                10 * (long)(bank[batteries[10]] - '0') +
-                1 * (long)(bank[batteries[11]] - '0');
+            sumOfJolts += 
+                100000000000L * (bank[batteries[0]] - '0') +
+                10000000000L * (bank[batteries[1]] - '0') +
+                1000000000L * (bank[batteries[2]] - '0') +
+                100000000L * (bank[batteries[3]] - '0') +
+                10000000L * (bank[batteries[4]] - '0') +
+                1000000L * (bank[batteries[5]] - '0') +
+                100000L * (bank[batteries[6]] - '0') +
+                10000L * (bank[batteries[7]] - '0') +
+                1000L * (bank[batteries[8]] - '0') +
+                100L * (bank[batteries[9]] - '0') +
+                10L * (bank[batteries[10]] - '0') +
+                1L * (bank[batteries[11]] - '0');
         }
         return new ValueTask<string>(sumOfJolts.ToString());
     }
