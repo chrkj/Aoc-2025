@@ -1,5 +1,4 @@
 ﻿using AoCHelper;
-using Spectre.Console.Rendering;
 
 namespace AdventOfCode;
 
@@ -47,6 +46,39 @@ public partial class Day05 : BaseDay
 
     public override ValueTask<string> Solve_2()
     {
-        return new ValueTask<string>();
+        int splitIndex = Array.IndexOf(_input, "");
+        string[] rangeInput = _input.Take(splitIndex).ToArray();
+        List<(long, long)> finalRanges = [];
+        
+        List<(long, long)> ranges = [];
+        foreach (string range in rangeInput)
+        {
+            string[] strRange = range.Split("-");
+            ranges.Add(new ValueTuple<long, long>(long.Parse(strRange[0]),long.Parse(strRange[1])));
+        }
+        ranges.Sort((a, b) => a.Item1.CompareTo(b.Item1));
+
+        long currentMinRange = ranges[0].Item1;
+        long currentMaxRange = ranges[0].Item2;
+        for (int i = 1; i < ranges.Count; i++)
+        {
+            if (ranges[i].Item1 <= currentMaxRange)
+            {
+                if (ranges[i].Item2 > currentMaxRange)
+                    currentMaxRange = ranges[i].Item2;
+            }
+            else
+            {
+                finalRanges.Add(new ValueTuple<long, long>(currentMinRange,currentMaxRange));
+                currentMinRange = ranges[i].Item1;
+                currentMaxRange = ranges[i].Item2;
+            }
+        }
+        finalRanges.Add(new ValueTuple<long, long>(currentMinRange,currentMaxRange));
+
+        long sum = 0;
+        foreach (var finalRange in finalRanges)
+            sum += finalRange.Item2 - finalRange.Item1 + 1;
+        return new ValueTask<string>(sum.ToString());
     }
 }
